@@ -5,23 +5,30 @@
 
 class Expr:
     
-    def solve(x,y):
-        pass
-
-    def make_tt():
-        print ("{} \t| {} \t | {} \t".format("x", "y", "equation"))
-        booleans = [True, False]
-        for i in range(len(booleans)):
-            return Expr.solve(x,y)
-              
+    def __str__(self):
+        return self.str_aux(0)
+    
+# =============================================================================
+#     def solve(x,y):
+#         pass
+# 
+#     def make_tt():
+#         print ("{} \t| {} \t | {} \t".format("x", "y", "equation"))
+#         booleans = [True, False]
+#         for i in range(len(booleans)):
+#             return Expr.solve(x,y)
+#               
+# =============================================================================
         
 
 class Not(Expr):
     
+    prec = 4
+    
     def __init__ (self, notthis):
         self.notthis = notthis
         
-    def __str__ (self):
+    def str_aux (self,prec):
         return "!" + str(self.notthis)
     
     def eval (self, env):
@@ -32,7 +39,7 @@ class Var(Expr):
     def __init__ (self, value):
         self.value = value
         
-    def __str__ (self):
+    def str_aux (self,prec):
         return str(self.value)
     
     def eval (self,env):
@@ -44,8 +51,15 @@ class BinOp(Expr):
         self.left = left
         self.right = right
         
-    def __str__ (self):
-        return "("+ str(self.left) + self.op + str(self.right) + ")"
+    def str_aux (self,prec):
+        s = str(self.left) + self.op + str(self.right)
+        
+        if self.prec < prec:
+            return "("+s+")"
+        
+        else:
+            return s
+        
     
     def eval(self, env):
         #print (self.left)
@@ -54,18 +68,21 @@ class BinOp(Expr):
 
 class And(BinOp):
     op = "&"
+    prec = 3
     
     def fun(self, x, y):
         return x &  y   
 
 class Or(BinOp):
     op = "|"
+    prec = 2
     
     def fun (self, x, y):
         return x | y
 
 class Eq(BinOp):
     op = "=="
+    prec = 1
     
     def fun (self, x, y):
         return x == y
@@ -89,6 +106,7 @@ print(e1)
 print(e2)
 print(e3)
 print(e4)
+
 
 print (e1.eval(env))
 print (e2.eval(env))
