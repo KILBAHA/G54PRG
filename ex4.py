@@ -6,20 +6,40 @@
 class Expr:
     
     def __str__(self):
-        return self.str_aux(0)
+        return self.str_aux(4)
     
-# =============================================================================
-#     def solve(x,y):
-#         pass
-# 
-#     def make_tt():
-#         print ("{} \t| {} \t | {} \t".format("x", "y", "equation"))
-#         booleans = [True, False]
-#         for i in range(len(booleans)):
-#             return Expr.solve(x,y)
-#               
-# =============================================================================
+    def make_tt(self):
+        print ("y     | x    |" + str(self))
         
+        env = {"x":True, "y":True}
+        TT = self.eval(env)
+        print ("True  | True |" + str(TT))
+        
+        env = {"x":True, "y":False}
+        TF = self.eval(env)
+        print ("False | True |" + str(TF))
+        
+        env = {"x":False, "y":True}
+        FT = self.eval(env)
+        print ("False | True |" + str(FT))
+        
+        env = {"x":False, "y":False}
+        FF = self.eval(env)
+        print ("False | False|" + str(FF))
+        
+        pass
+    
+    def isTauto(self):
+        env = {"x":True, "y":True}
+        TT = self.eval(env)
+        env = {"x":False, "y":False}
+        FF = self.eval(env)
+        env = {"x":True, "y":False}
+        TF = self.eval(env)
+        env = {"x":False, "y":True}
+        FT = self.eval(env)
+        
+        return TT and FF and TF and FT        
 
 class Not(Expr):
     
@@ -62,7 +82,6 @@ class BinOp(Expr):
         
     
     def eval(self, env):
-        #print (self.left)
         return self.fun(self.left.eval(env), self.right.eval(env))
 
 
@@ -102,18 +121,40 @@ Dictionary for x and y values
 """
 env = {"x":False, "y":True}
 
-print(e1)
-print(e2)
-print(e3)
-print(e4)
+boolean = [True,False]
+
+# =============================================================================
+# print(e1)
+# print(e2)
+# print(e3)
+# print(e4)
+# 
+# 
+# print (e1.eval(env))
+# print (e2.eval(env))
+# print (e3.eval(env))
+# print (e4.eval(env))
+# =============================================================================
 
 
-print (e1.eval(env))
-print (e2.eval(env))
-print (e3.eval(env))
-print (e4.eval(env))
+print("Truth Tables:")
+print("Equation 1")
+print(e1.make_tt())
+print("Equation 2")
+print(e2.make_tt())
+print("Equation 3")
+print(e3.make_tt())
+print("Equation 4")
+print(e4.make_tt())
+
+print ("Tautology:")
+print("Equation 1")
+print(e1.isTauto())
+print("Equation 2")
+print(e2.isTauto())
+print("Equation 3")
+print(e3.isTauto())
+print("Equation 4")
+print(e4.isTauto())
 
 
-"""
-Creating the tables
-"""
