@@ -1,2 +1,2 @@
 # G54PRG
-A place to dump versions of programming exercises
+A repository housing scripts created during my undergraduate python programming lectures
